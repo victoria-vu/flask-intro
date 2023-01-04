@@ -13,13 +13,16 @@ AWESOMENESS = [
     'oh-so-not-meh', 'brilliant', 'ducky', 'coolio', 'incredible',
     'wonderful', 'smashing', 'lovely']
 
+INSULT = [
+    'terrible', 'smelly', 'ugly', 'horrendous']
+
 
 @app.route('/')
 def start_here():
     """Home page."""
 
     return """<!doctype html><html>Hi! This is the home page.
-    <br/><a href="/hello">Greeting Page</a> 
+    <br/><a href="/hello">Come say hi!</a> 
     </html>"""
 
 
@@ -35,10 +38,12 @@ def say_hello():
       </head>
       <body>
         <h1>Hi There!</h1>
-        <form action="/greet">
+
+          <form action="/greet">
           What's your name? <input type="text" name="person">
-          <input type="submit" value="Submit">
           
+          <h2>Would you like a compliment or insult?</h2>
+
           <div>
           <label for="compliment-select">Choose your compliment:</label>
 
@@ -58,9 +63,28 @@ def say_hello():
             <option value="{AWESOMENESS[12]}">{AWESOMENESS[12]}</option>
             <option value="{AWESOMENESS[13]}">{AWESOMENESS[13]}</option>
           </select>
+
+          <input type="submit" value="Submit">
           </div>
-        
-        </form>
+          </form>
+
+          </br>
+
+          <div>
+          <form action="/diss">
+          <label for="insult-select">Choose your insult:</label>
+          
+          <select name="insult" id="insult-select">
+            <option value="{INSULT[0]}">{INSULT[0]}</option>
+            <option value="{INSULT[1]}">{INSULT[1]}</option>
+            <option value="{INSULT[2]}">{INSULT[2]}</option>
+            <option value="{INSULT[3]}">{INSULT[3]}</option>
+          </select>
+
+          <input type="submit" value="Submit">
+          </div>
+          </form>
+
       </body>
     </html>
     """
@@ -86,6 +110,23 @@ def greet_person():
     </html>
     """
 
+@app.route('/diss')
+def get_diss():
+    """Get insult only."""
+
+    insult = request.args.get("insult")
+
+    return f"""
+    <!doctype html>
+    <html>
+      <head>
+        <title>A Compliment</title>
+      </head>
+      <body>
+        Hey you. I don't care about your name. I think you're {insult}.
+      </body>
+    </html>
+    """
 
 if __name__ == '__main__':
     # debug=True gives us error messages in the browser and also "reloads"
